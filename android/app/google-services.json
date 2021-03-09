@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "543857196664",
+    "project_id": "intown-43f42",
+    "storage_bucket": "intown-43f42.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543857196664:android:c953ad8def99572bb8378d",
+        "android_client_info": {
+          "package_name": "com.intown"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "543857196664-kq2mr0t8s7nm79tjbpnmjrbhinta1d8n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPBPDDOgFq6P-dXytc3uDyXzqqbO_73Pk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "543857196664-kq2mr0t8s7nm79tjbpnmjrbhinta1d8n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
