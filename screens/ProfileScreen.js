@@ -16,7 +16,7 @@ const ProfileScreen = () => {
       />
       <View style={styles.body}>
         <View style={styles.bodyContent}>
-          <Text style={styles.name}>Dan Brown</Text>
+          <Text style={styles.name}>Nitesh Dubey</Text>
           <Text style={styles.info}>Location tag default</Text>
           <Text style={styles.description}>
             {' '}

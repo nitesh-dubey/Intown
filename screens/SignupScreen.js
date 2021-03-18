@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Platform,
   StyleSheet,
+  ScrollView
 } from "react-native";
 import FormInput from "../components/FormInput";
 import FormButton from "../components/FormButton";
@@ -12,6 +13,7 @@ import SocialButton from "../components/SocialButton";
 import { AuthContext } from "../navigation/AuthProvider";
 
 const SignupScreen = ({ navigation }) => {
+  const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
@@ -19,14 +21,26 @@ const SignupScreen = ({ navigation }) => {
   const { register } = useContext(AuthContext);
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.text}>Create an account</Text>
+
+
+      <FormInput
+        labelValue={name}
+        onChangeText={(userName) => setName(userName)}
+        placeholderText="Name"
+        iconType="person"
+        keyboardType="default"
+        autoCapitalize="none"
+        autoCorrect={false}
+      />
+
 
       <FormInput
         labelValue={email}
         onChangeText={(userEmail) => setEmail(userEmail)}
         placeholderText="Email"
-        iconType="user"
+        iconType="email"
         keyboardType="email-address"
         autoCapitalize="none"
         autoCorrect={false}
@@ -50,7 +64,7 @@ const SignupScreen = ({ navigation }) => {
 
       <FormButton
         buttonTitle="Sign Up"
-        onPress={() => register(email, password)}
+        onPress={() => register(name, email, password)}
       />
 
       <View style={styles.textPrivate}>
@@ -94,7 +108,7 @@ const SignupScreen = ({ navigation }) => {
       >
         <Text style={styles.navButtonText}>Have an account? Sign In</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -103,9 +117,9 @@ export default SignupScreen;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#f9fafd",
-    flex: 1,
+    flexGrow: 1,
     justifyContent: "center",
-    alignItems: "center",
+    // alignItems: "center",
     padding: 20,
     backgroundColor: "#fff",
   },

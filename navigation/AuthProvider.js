@@ -18,12 +18,19 @@ export const AuthProvider = ({ children }) => {
             console.log(e);
           }
         },
-        register: async (email, password) => {
-          try {
-            await auth().createUserWithEmailAndPassword(email, password);
-          } catch (e) {
-            console.log(e);
+        register: (name, email, password) => {
+          if(email == "" || password == "" || name == "") {
+            alert("Please Enter the details Correctly.");
+            return;
           }
+          auth().createUserWithEmailAndPassword(email, password)
+                .then((res) => {
+                  res.user.updateProfile({
+                    displayName : name
+                  })
+                  console.log(auth().currentUser);
+                })
+                .catch(e => console.log(e));
         },
         logout: async () => {
           try {
