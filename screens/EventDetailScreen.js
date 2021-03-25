@@ -13,29 +13,29 @@ class EventDetailScreen extends Component {
         const email_icon = <Icon style={{paddingRight:5}} name="envelope-square" size={20} color="black" />;
         const map_icon = <Icon style={{paddingRight:5}} name="map-signs" size={20} color="black" />;
         const { params } = this.props.route;
-        const eventName = params ? params.eventName : null;
+        const eventName = params ? params.eventcategory : null;
        // const name = navigation.getParam('eventName') || '';
         return(
             <View style={styles.container}>
                 <View style={{height:100, width:'100%', alignSelf:'center' }} >
-                       <Image source={{uri:params.image}} resizeMode="contain" style={{borderRadius:12, flex:1,alignSelf:'stretch', width:'100%', height:'100%', }} />
+                       <Image source={{uri:params.thumbnailURL}} resizeMode="contain" style={{borderRadius:12, flex:1,alignSelf:'stretch', width:'100%', height:'100%', }} />
                 </View>
                 <View style={{marginVertical:10}} >
-                         <Text style={{fontSize:24, fontWeight:'bold',color:'black'}} >{params.eventName}</Text>
+                         <Text style={{fontSize:24, fontWeight:'bold',color:'black'}} >{params.eventcategory}</Text>
                 </View>
                 <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:8, alignItems:'baseline'}} >
                         <View style={{flexDirection:'row', alignItems:'baseline' }} >
                                 <Text style={{fontSize:18, fontWeight:'bold',color:'brown'}} >Max_Attendes: </Text>
                                 <Text style={{fontSize:18, fontWeight:'bold'}} >{params.maxAttendees}</Text>
                         </View>
-                        <Text style={{fontSize:16, fontWeight:'bold'}} >{params.time}</Text>
+                        {/* <Text style={{fontSize:16, fontWeight:'bold'}} >{params.time}</Text> */}
                   </View>
                 <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:8, alignItems:'baseline'}} >
                         <View style={{flexDirection:'row', alignItems:'baseline' }} >
                                 <Text style={{fontSize:18, fontWeight:'bold',color:'brown'}} >Type: </Text>
-                                <Text style={{fontSize:18, fontWeight:'bold'}} >{params.genre}</Text>
+                                <Text style={{fontSize:18, fontWeight:'bold'}} >{params.eventcategory}</Text>
                         </View>
-                        <Text style={{fontSize:16, fontWeight:'bold'}} >{moment(new Date(params.date)).calendar()}</Text>
+                        <Text style={{fontSize:16, fontWeight:'bold'}} >{moment(params.date.toDate()).format("DD/MM/YYYY")}</Text>
                   </View>
                          <View>
                                 {
@@ -57,7 +57,8 @@ class EventDetailScreen extends Component {
                                 }
 
                         </View>
-                        <View>
+                        
+                        {/* <View>
                            {  
                                    params.form !== null &&                  
                                    <TouchableOpacity style={{elevation:9, flexDirection:'row', padding:12,borderRadius:6, backgroundColor:"#97d381"}}  onPress={() => Linking.openURL(params.form)} >
@@ -65,11 +66,11 @@ class EventDetailScreen extends Component {
                                     <Text style={{color:'black',fontSize:15 }} >Register</Text>
                                   </TouchableOpacity> 
                            }
-                         </View>
+                         </View> */}
                          <View>
                            {  
                                    params.form == null &&                  
-                                   <TouchableOpacity style={{elevation:9, flexDirection:'row', padding:12,borderRadius:6, backgroundColor:"#97d381"}}  onPress={() => console.log('yet to open')} >
+                                   <TouchableOpacity style={{elevation:9, flexDirection:'row', padding:12,borderRadius:6, backgroundColor:"#97d381"}}  onPress={() => alert("Registration Yet to open")} >
                                     {register_icon}
                                     <Text style={{color:'black',fontSize:15 }} >Register</Text>
                                   </TouchableOpacity> 
@@ -78,9 +79,9 @@ class EventDetailScreen extends Component {
                          <View>
                            {  
                                   // params.form == null &&                  
-                                   <TouchableOpacity style={{elevation:9, flexDirection:'row', padding:12,borderRadius:6, backgroundColor:"#97d381"}}  onPress={() => console.log('dummy')} >
+                                   <TouchableOpacity style={{elevation:9, flexDirection:'row', padding:12,borderRadius:6, backgroundColor:"#97d381"}}  onPress={() => Communications.email(params.contactEmail, null, null, null, null)} >
                                     {email_icon}
-                                    <Text style={{color:'black',fontSize:15 }} >temp@gmail.com</Text>
+                                    <Text style={{color:'black',fontSize:15 }} >{params.contactEmail}</Text>
                                   </TouchableOpacity> 
                            }
                          </View>
@@ -88,7 +89,7 @@ class EventDetailScreen extends Component {
                         <View style={{marginTop:5}} > 
                                    
                                     <Text style={{marginVertical:5,lineHeight:23, fontSize:20,fontWeight:'bold',color:'brown'}} >Event Details: </Text>
-                                    <Text style={{lineHeight:23, fontSize:20}} >{params.eventDescription} </Text>
+                                    <Text style={{lineHeight:23, fontSize:20}} >{params.description} </Text>
                         </View>
                  </ScrollView>
             </View>
