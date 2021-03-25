@@ -1,8 +1,24 @@
-import React, {useState, useEffect} from 'react';
-import {Text, View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import React, {useState, useEffect, useContext} from 'react';
+import {Text, View, StyleSheet, ScrollView, PermissionsAndroid} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import RNPicker from "rn-modal-picker";
 import DatePicker from 'react-native-date-picker';
-import { Input, Icon } from 'react-native-elements';
+//import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { Input, Icon, Button, Overlay } from 'react-native-elements';
+import {AuthContext} from '../navigation/AuthProvider';
+
+// import Geolocation from "@react-native-community/geolocation";
+import Geolocation from 'react-native-geolocation-service';
+import geohash from 'ngeohash';
+
+import firestore from '@react-native-firebase/firestore';
+
+import {requestLocationPermission} from '../utils/requestLocationPermission';
+
+//Importing thumbnail data
+import ThumbnailURL from '../data/thumbnailUrl.json';
+
+
 
 const NewEventScreen = () => {
     const [eventCategory, setEventCategory] = useState('');
@@ -19,12 +35,96 @@ const NewEventScreen = () => {
         {id  : 10, name : 'Health'},
     ]);
     
-    const [date, setDate] = useState(new Date());
-    const [time, setTime] = useState(new Date());
+    const [dateTime, setDateTime] = useState(new Date());
+    // const [time, setTime] = useState(new Date());
     const [eventDescription, setEventDescription] = useState("");
     const [contactEmail, setContactEmail] = useState("");
     const [contactPhone, setContactPhone] = useState(0);
     const [maxAttendees, setMaxAttendees] = useState(0);
+    const [lat, setLat] = useState(null);
+    const [long, setLong] = useState(null);
+    const {user} = useContext(AuthContext);
+    const [venue, setVenue] = useState("");
+    const [eventMode, setEventMode] = useState()
+
+    const navigation = useNavigation();
+
+    const eventModeData = [
+        {id : 1, name : 'Offline'},
+        {id : 2, name : 'Online'},
+    ]
+
+
+    //checking for location permission
+    const [isLocationPermissionGranted, setIsLocationPermissionGranted] = useState(false);
+    
+    
+    //under construction
+    const getCurrentPosition = () => {
+        if(isLocationPermissionGranted) {
+            Geolocation.getCurrentPosition(
+                pos => {
+                    setLat(pos.coords.latitude);
+                    setLong(pos.coords.longitude);
+
+                },
+                error => alert(error.message),
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+            );
+        }
+        else {
+            requestLocationPermission(isLocationPermissionGranted, setIsLocationPermissionGranted)
+            .then(() => {
+                Geolocation.getCurrentPosition(
+                    pos => {
+                        setLat(pos.coords.latitude);
+                        setLong(pos.coords.longitude);               
+                    },
+                    error => alert(error.message)
+                );
+            })
+        }
+    };
+
+
+
+
+    const addToDatabase = () => {
+
+        let db = firestore();
+        const hash = geohash.encode(lat, long);
+
+        db.collection('Events')
+            .add({
+                eventcategory : eventCategory,
+                eventMode : eventMode,
+                venue : venue,
+                latitude : lat,
+                longitude : long,
+                geohash : hash,
+                contactEmail : contactEmail,
+                contactPhone : contactPhone,
+                createdBy : user.uid,
+                date : dateTime,
+                description : eventDescription,
+                maxAttendees : maxAttendees,
+                likesCount : 0,
+                CommentsCount : 0,
+                thumbnailURL : ThumbnailURL[eventCategory],
+            })
+            .then(() => {
+                return db.collection('Users')
+                        .doc(user.uid)
+                        .update({
+                            eventsCreatedCount : firestore.FieldValue.increment(1)
+                        })
+            })
+            .catch(e => console.warn(e));
+        
+        navigation.goBack();
+
+    }
+
 
     return(
         <ScrollView contentContainerStyle={styles.container}>
@@ -51,19 +151,20 @@ const NewEventScreen = () => {
                 selectedValue={(index, item) => setEventCategory(item.name)}
             />
 
+
             <View style={styles.datePickerStyle}>
                 <DatePicker 
-                    date={date}
+                    date={dateTime}
                     mode="date"
-                    onDateChange={setDate}
+                    onDateChange={(val) => {setDateTime(val);}}
                 />
             </View>
 
             <View style={styles.timePickerStyle}>
                 <DatePicker 
-                    date={date}
+                    date={dateTime}
                     mode="time"
-                    onDateChange={setTime}
+                    onDateChange={val => {setDateTime(val);}}
                 />
             </View>
 
@@ -154,8 +255,130 @@ const NewEventScreen = () => {
                 onChangeText={value => setMaxAttendees(value)}
             />
 
+
+            <Button
+                type='outline'
+                title="Use Current Location"
+                containerStyle={{
+                    marginTop : 25,
+                    width : '96%',
+                }}
+                buttonStyle={{
+                    height : 39,
+                    borderColor : '#000',
+                    borderWidth : 1,
+                    borderRadius : 5,
+                    elevation : 2,
+                }}
+                titleStyle={{
+                    color : '#000'
+                }}
+                onPress={getCurrentPosition}
+            />
+
+
+            <Input
+                placeholder="Enter Latitude"
+                leftIcon={
+                    <Icon
+                        type="MaterialIcons" 
+                        name="location-pin"
+                        size={24}
+                    />
+                }
+                label="Latitude"
+                maxLength={10}
+                inputContainerStyle={{
+                    margin : 5,
+                }}
+                containerStyle={{
+                    marginTop : 45,
+                }}
+                keyboardType="decimal-pad"
+                value={lat ? lat.toString() : lat}
+                onChangeText={value => setLat(value)}
+            />
+
+            <Input
+                placeholder="Enter Longitude"
+                leftIcon={
+                    <Icon
+                        type="MaterialIcons" 
+                        name="location-pin"
+                        size={24}
+                    />
+                }
+                label="Longitude"
+                maxLength={10}
+                inputContainerStyle={{
+                    margin : 5,
+                }}
+                containerStyle={{
+                    marginTop : 25,
+                    marginBottom : 20,
+                }}
+                keyboardType="decimal-pad"
+                value={long ? long.toString() : long}
+                onChangeText={value => setLong(value)}
+            />
+
+            <RNPicker
+                dataSource={eventModeData}
+                dummyDataSource={eventModeData}
+                defaultValue={false}
+                disablePicker={false}
+                changeAnimation={"none"}
+                searchBarPlaceHolder={"Search....."}
+                showPickerTitle={true}
+                pickerStyle={styles.pickerStyle}
+                itemSeparatorStyle={styles.itemSeparatorStyle}
+                pickerItemTextStyle={styles.listTextViewStyle}
+                selectedLabel={eventMode}
+                placeHolderLabel="Choose Event Mode"
+                selectLabelTextStyle={styles.selectLabelTextStyle}
+                placeHolderTextStyle={styles.placeHolderTextStyle}
+                dropDownImageStyle={styles.dropDownImageStyle}
+                dropDownImage={require("../assets/ic_drop_down.png")}
+                selectedValue={(index, item) => setEventMode(item.name)}
+            />
+
+            <Input
+                placeholder="Type the Venue (or URL).."
+                leftIcon={
+                    <Icon
+                        type="MaterialIcons" 
+                        name="house"
+                        size={24}
+                    />
+                }
+                label="Venue"
+                maxLength={200}
+                inputContainerStyle={{
+                    margin : 5,
+                }}
+                containerStyle={{
+                    marginTop : 40,
+                }}
+                onChangeText={value => setVenue(value)}
+
+            />
+
             
-            
+            <Button
+                raised
+                title="Create Event"
+                type="Solid"
+                containerStyle={{
+                    marginTop : 20,
+                    marginBottom : 20,
+                    borderRadius : 20,
+                    padding : 10,
+                }}
+                titleStyle={{
+                    color : '#000'
+                }}
+                onPress={addToDatabase}
+            />
 
         </ScrollView>
     )
@@ -233,5 +456,13 @@ const styles = StyleSheet.create({
         shadowColor: "#d3d3d3",
         borderRadius: 5,
         flexDirection: "row"
+    },
+    overlay : {
+        height : '90%',
+        width : '80%',
+        borderRadius : 15,
+        alignItems : 'center',
+        justifyContent : 'center',
+        elevation : 20,
     }
 });

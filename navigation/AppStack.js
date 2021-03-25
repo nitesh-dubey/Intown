@@ -7,6 +7,7 @@ import EventScreen from '../screens/EventScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import BottomTabNavigator from './BottomTabNavigator';
 import NewEventScreen from '../screens/NewEventScreen';
+import EventDetailScreen from '../screens/EventDetailScreen';
 
 
 const Stack = createStackNavigator();
@@ -31,6 +32,17 @@ const AppStack = () => {
             elevation : 1,
           }
         }}/>
+      <Stack.Screen
+        name="EventDetailScreen"
+        component={EventDetailScreen}
+        options={{
+          title : "Event Details",
+          headerTitleAlign : 'center',
+          headerStyle : {
+            elevation : 1
+          }
+        }}
+      />
     </Stack.Navigator>
   );
 };

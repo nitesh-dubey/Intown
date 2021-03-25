@@ -1,6 +1,7 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import {AuthContext} from './AuthProvider';
 
 import AuthStack from './AuthStack';
@@ -11,8 +12,22 @@ const Routes = () => {
   const [initializing, setInitializing] = useState(true);
 
   const onAuthStateChanged = (user) => {
-    setUser(user);
-    console.log(user);
+
+    if(user) {
+      console.log(user);
+      firestore()
+      .collection('Users')
+      .doc(user.uid)
+      .get()
+      .then(usr => {
+        console.log(usr._data);
+        setUser(usr._data);
+      })
+    }
+    else {
+      setUser(user);
+    };
+
     if (initializing) setInitializing(false);
   };
 

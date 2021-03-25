@@ -1,5 +1,6 @@
 import React, { createContext, useState } from "react";
 import auth from "@react-native-firebase/auth";
+import firestore from '@react-native-firebase/firestore';
 
 export const AuthContext = createContext();
 
@@ -25,10 +26,26 @@ export const AuthProvider = ({ children }) => {
           }
           auth().createUserWithEmailAndPassword(email, password)
                 .then((res) => {
-                  res.user.updateProfile({
-                    displayName : name
-                  })
-                  console.log(auth().currentUser);
+                  return res.user.updateProfile({ displayName : name })
+                })
+                .then(() => {
+                  const currUser = auth().currentUser;
+                  
+                  let userInfo = {
+                    uid : currUser.uid,
+                    name : name,
+                    email : currUser.email,
+                    eventsCreatedCount : 0,
+                    attendingEventList : [],
+                    likedEventList : []
+                  }
+
+                  setUser(userInfo);
+                  return firestore()
+                          .collection('Users')
+                          .doc(userInfo.uid)
+                          .set(userInfo);
+
                 })
                 .catch(e => console.log(e));
         },

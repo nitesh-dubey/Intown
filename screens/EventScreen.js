@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,7 +6,11 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
+  TouchableNativeFeedback
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import FormButton from '../components/FormButton';
 import {AuthContext} from '../navigation/AuthProvider';
 
@@ -14,53 +18,55 @@ import {AuthContext} from '../navigation/AuthProvider';
 import {windowWidth, windowHeight} from '../utils/Dimensions';
 
 //dummy data
-import eventsData from '../data/eventsData.json';
+import eventsData from '../data/db';
+// import eventsData from '../data/eventsData.json';
 
-const Item = ({item}) => {
-  return (
-    <View style={styles.listItem}>
-      <View style={styles.thumbnailStyle}>
-        <Image
-          source={{uri: item.photo}}
-          style={{width: '100%', height: windowWidth, borderRadius: 2}}
-        />
-      </View>
-
-      <View style={{alignItems: 'center', flex: 1}}>
-        <Text style={{fontWeight: 'bold', fontSize: 20, marginTop: 5}}>
-          {item.name}
-        </Text>
-        <Text style={{fontWeight: '100', fontSize: 18, marginTop: 5}}>
-          {item.place}
-        </Text>
-        <Text style={{fontWeight: '500', fontSize: 15, marginTop: 5}}>
-          {item.date}
-        </Text>
-        <Text>{item.position}</Text>
-      </View>
-      <TouchableOpacity
-        style={{
-          height: 50,
-          width: 50,
-          marginBottom: 10,
-          alignSelf: 'center',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <Text style={{color: 'green'}}>View</Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
 
 const EventScreen = () => {
+  const navigation = useNavigation();
   const [data, setData] = useState(eventsData);
+
+
+
+  const Item = ({item}) => {
+    return (
+      <TouchableNativeFeedback onPress={() => navigation.navigate('EventDetailScreen', {...item})} >
+        <View style={{marginVertical:20, 
+                      marginHorizontal:15, 
+                      borderRadius:15,  
+                      backgroundColor:'#ced6e0', 
+                      elevation:15}} >
+                    <View style={{padding:15,  
+                                  backgroundColor:'#d1f3f5', }}  >
+                            <Text style={{ fontSize:24, fontWeight:'bold', }} >{item.eventName}</Text>
+                            <Text style={{ fontSize:18, fontWeight:'900', }} > Max Attendees: {item.maxAttendees}</Text>
+                            <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:8, alignItems:'baseline'}} >
+                                    <View style={{flexDirection:'row', alignItems:'baseline' }} >
+                                            <Text style={{fontSize:16, fontWeight:'bold'}} >Type: </Text>
+                                            <Text  >{item.genre}</Text>
+                                    </View>
+                                    <Text style={{fontSize:16, fontWeight:'bold'}} >{(item.date)} </Text>
+                            </View>
+                    </View>
+                    <View style={{ height:200, maxwidth:'100%', }} >
+                              <Image source={{uri:item.image}} resizeMode="cover" style={{ flex:1, alignSelf:'stretch', borderBottomLeftRadius:15, borderBottomRightRadius:15,   }} /> 
+                    </View>
+        </View>
+        </TouchableNativeFeedback>
+    );
+  };
+
 
   return (
     <View style={styles.container}>
+      <View style= {styles.header}>
+             <Text style={styles.htext} >Find Events</Text>
+      </View>
+
       <FlatList
-        style={{flex: 1}}
+        style={{width : '100%'}}
         data={data}
+        showsVerticalScrollIndicator={false}
         renderItem={({item}) => <Item item={item} />}
         keyExtractor={(item) => item.eventId}
       />
@@ -68,28 +74,26 @@ const EventScreen = () => {
   );
 };
 
-export default EventScreen;
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F7F7F7',
-    marginTop: 60,
-  },
-  listItem: {
-    marginLeft: 5,
-    marginRight: 5,
-    backgroundColor: '#FFF',
-    width: '100%',
-    flex: 1,
-    alignSelf: 'center',
-    flexDirection: 'column',
-    borderRadius: 5,
-  },
-  thumbnailStyle: {
-    alignSelf: 'center',
-    resizeMode: 'contain',
-    height: windowWidth,
-    width: '100%',
-  },
+  header: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomColor:'#ddd',
+    borderBottomWidth:2,
+    backgroundColor:'transparent'
+},
+   container:{
+       flex:1,
+       backgroundColor:'#f1f2f6'
+   },
+   htext:{
+    fontSize:20,
+    // fontFamily: "Cochin",
+    fontWeight:'bold',
+    textAlign:'center',
+    margin:15
+}
 });
+
+
+export default EventScreen;
