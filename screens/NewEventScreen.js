@@ -46,6 +46,7 @@ const NewEventScreen = () => {
     const {user} = useContext(AuthContext);
     const [venue, setVenue] = useState("");
     const [eventMode, setEventMode] = useState()
+    const [googleFormLink, setGoogleFormLink] = useState();
 
     const navigation = useNavigation();
 
@@ -111,6 +112,7 @@ const NewEventScreen = () => {
                 likesCount : 0,
                 CommentsCount : 0,
                 thumbnailURL : ThumbnailURL[eventCategory],
+                GoogleFormLink : googleFormLink,
             })
             .then(() => {
                 return db.collection('Users')
@@ -360,6 +362,27 @@ const NewEventScreen = () => {
                     marginTop : 40,
                 }}
                 onChangeText={value => setVenue(value)}
+
+            />
+
+            <Input
+                placeholder="Google Form Link"
+                leftIcon={
+                    <Icon
+                        type="MaterialIcons" 
+                        name="house"
+                        size={24}
+                    />
+                }
+                label="Google Form Link"
+                maxLength={400}
+                inputContainerStyle={{
+                    margin : 5,
+                }}
+                containerStyle={{
+                    marginTop : 40,
+                }}
+                onChangeText={value => setGoogleFormLink(value)}
 
             />
 

@@ -3,7 +3,7 @@ import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {AuthContext} from '../navigation/AuthProvider';
 
 const ProfileScreen = () => {
-  const {logout} = useContext(AuthContext);
+  const {logout, user} = useContext(AuthContext);
   return (
     <View style={styles.container}>
       <View style={styles.header}></View>
@@ -16,19 +16,19 @@ const ProfileScreen = () => {
       />
       <View style={styles.body}>
         <View style={styles.bodyContent}>
-          <Text style={styles.name}>Nitesh Dubey</Text>
+          <Text style={styles.name}>{user.name}</Text>
           <Text style={styles.info}>Location tag default</Text>
           <Text style={styles.description}>
             {' '}
             Living every moment of my life! #wanderlust{' '}
           </Text>
 
-          <TouchableOpacity style={styles.buttonContainer}>
+          {/* <TouchableOpacity style={styles.buttonContainer}>
             <Text>Events Registered</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.buttonContainer}>
             <Text>Events Created</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </View>

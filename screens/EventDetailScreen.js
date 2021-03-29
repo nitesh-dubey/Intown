@@ -58,16 +58,16 @@ class EventDetailScreen extends Component {
 
                         </View>
                         
-                        {/* <View>
+                        <View>
                            {  
-                                   params.form !== null &&                  
-                                   <TouchableOpacity style={{elevation:9, flexDirection:'row', padding:12,borderRadius:6, backgroundColor:"#97d381"}}  onPress={() => Linking.openURL(params.form)} >
+                                   params.googleFormLink !== null &&                  
+                                   <TouchableOpacity style={{elevation:9, flexDirection:'row', padding:12,borderRadius:6, backgroundColor:"#97d381"}}  onPress={() => Linking.openURL(params.googleFormLink)} >
                                     {register_icon}
                                     <Text style={{color:'black',fontSize:15 }} >Register</Text>
                                   </TouchableOpacity> 
                            }
-                         </View> */}
-                         <View>
+                         </View>
+                         {/* <View>
                            {  
                                    params.form == null &&                  
                                    <TouchableOpacity style={{elevation:9, flexDirection:'row', padding:12,borderRadius:6, backgroundColor:"#97d381"}}  onPress={() => alert("Registration Yet to open")} >
@@ -75,7 +75,7 @@ class EventDetailScreen extends Component {
                                     <Text style={{color:'black',fontSize:15 }} >Register</Text>
                                   </TouchableOpacity> 
                            }
-                         </View>
+                         </View> */}
                          <View>
                            {  
                                   // params.form == null &&                  
