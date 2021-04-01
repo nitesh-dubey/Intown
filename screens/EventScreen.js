@@ -196,8 +196,8 @@ const EventScreen = () => {
     
     const subscriber = firestore()
     .collection('Events')
-    // .where("eventcategory", "==", eventcategory)
-    // .where("eventMode", "==", eventMode)
+    .where("eventcategory", "==", eventcategory)
+    .where("eventMode", "==", eventMode)
     .onSnapshot(querySnapshot => {
       let events = []
 
