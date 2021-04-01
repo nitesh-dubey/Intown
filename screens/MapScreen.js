@@ -10,8 +10,8 @@ class MapScreen extends Component {
         const paramsMap = this.props.route.params
         return (
             <View style={styles.container}>
-               <MapView style={styles.map} initialRegion={{latitude:26.1445, longitude:91.7362, latitudeDelta:0.09, longitudeDelta:0.0921 }}  >
-                   <Marker coordinate={{latitude:paramsMap.lat, longitude:paramsMap.long }} title={paramsMap.eventName} />
+               <MapView style={styles.map} initialRegion={{latitude:parseFloat(paramsMap.latitude), longitude:parseFloat(paramsMap.longitude), latitudeDelta:0.09, longitudeDelta:0.0921 }}  >
+                   <Marker coordinate={{latitude:parseFloat(paramsMap.latitude), longitude:parseFloat(paramsMap.longitude) }} title={paramsMap.eventName} />
                </MapView>
             </View>
         );
