@@ -40,7 +40,7 @@ class EventDetailScreen extends Component {
                          <View>
                                 {
                                     params.venue !== null &&  
-                                    <TouchableOpacity style={{elevation:9, flexDirection:'row', padding:12,borderRadius:6, backgroundColor:"#97d381"}}  onPress={() => console.log("dummy_map")} >
+                                    <TouchableOpacity style={{elevation:9, flexDirection:'row', padding:12,borderRadius:6, backgroundColor:"#97d381"}}  onPress={() =>this.props.navigation.navigate('MapScreen',{...params})} >
                                         {map_icon}
                                     <Text style={{color:'black', fontSize:15}} >{params.venue}</Text>
                                     </TouchableOpacity>

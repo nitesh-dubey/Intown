@@ -8,6 +8,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import BottomTabNavigator from './BottomTabNavigator';
 import NewEventScreen from '../screens/NewEventScreen';
 import EventDetailScreen from '../screens/EventDetailScreen';
+import MapScreen from '../screens/MapScreen';
 
 
 const Stack = createStackNavigator();
@@ -37,6 +38,17 @@ const AppStack = () => {
         component={EventDetailScreen}
         options={{
           title : "Event Details",
+          headerTitleAlign : 'center',
+          headerStyle : {
+            elevation : 1
+          }
+        }}
+      />
+      <Stack.Screen
+        name="MapScreen"
+        component={MapScreen}
+        options={{
+          title : "location",
           headerTitleAlign : 'center',
           headerStyle : {
             elevation : 1

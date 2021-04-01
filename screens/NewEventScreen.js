@@ -13,7 +13,7 @@ import geohash from 'ngeohash';
 
 import firestore from '@react-native-firebase/firestore';
 
-import {requestLocationPermission} from '../utils/requestLocationPermission';
+import {requestLocationPermission} from '../utils/LocationFunctions';
 
 //Importing thumbnail data
 import ThumbnailURL from '../data/thumbnailUrl.json';
