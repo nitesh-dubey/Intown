@@ -61,6 +61,21 @@ const NewEventScreen = () => {
     
     
     //under construction
+
+    const getCurrentPosition = () => {
+        requestLocationPermission(isLocationPermissionGranted, setIsLocationPermissionGranted)
+        .then(() => {
+            Geolocation.getCurrentPosition(
+                pos => {
+                    setLat(pos.coords.latitude);
+                    setLong(pos.coords.longitude);
+                },
+                error => alert(error.message)
+            );
+        })
+    }
+
+    /*
     const getCurrentPosition = () => {
         if(isLocationPermissionGranted) {
             Geolocation.getCurrentPosition(
@@ -87,6 +102,7 @@ const NewEventScreen = () => {
         }
     };
 
+    */
 
 
 

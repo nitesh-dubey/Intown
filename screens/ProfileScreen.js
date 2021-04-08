@@ -1,73 +1,45 @@
 import React, {useContext} from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
+import {Text, Divider} from 'react-native-elements';
 import {AuthContext} from '../navigation/AuthProvider';
+import { useNavigation } from '@react-navigation/native';
+
 
 const ProfileScreen = () => {
   const {logout, user} = useContext(AuthContext);
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.header}></View>
       <Image
         style={styles.avatar}
         source={{
-          uri:
-            'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg',
+          uri : "https://randomuser.me/api/portraits/men/86.jpg",
         }}
       />
       <View style={styles.body}>
         <View style={styles.bodyContent}>
           <Text style={styles.name}>{user.name}</Text>
-          <Text style={styles.info}>Location tag default</Text>
-          <Text style={styles.description}>
-            {' '}
-            Living every moment of my life! #wanderlust{' '}
-          </Text>
+
+          <Divider style={styles.divider} />
 
           {/* <TouchableOpacity style={styles.buttonContainer}>
             <Text>Events Registered</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonContainer}>
-            <Text>Events Created</Text>
           </TouchableOpacity> */}
+
+          <View style = {styles.eventsCreatedCount}>
+            <Text style={{fontSize : 20}}>Events Created : {user.eventsCreatedCount}</Text>
+          </View>
+
+          <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate("EventsCreatedScreen")}>
+            <Text>Events Created</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
   );
 };
 
-// export default class Profile extends Component {
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <View style={styles.header}></View>
-//         <Image
-//           style={styles.avatar}
-//           source={{
-//             uri:
-//               "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg",
-//           }}
-//         />
-//         <View style={styles.body}>
-//           <View style={styles.bodyContent}>
-//             <Text style={styles.name}>Dan Brown</Text>
-//             <Text style={styles.info}>Location tag default</Text>
-//             <Text style={styles.description}>
-//               {" "}
-//               Living every moment of my life! #wanderlust{" "}
-//             </Text>
-
-//             <TouchableOpacity style={styles.buttonContainer}>
-//               <Text>Events Registered</Text>
-//             </TouchableOpacity>
-//             <TouchableOpacity style={styles.buttonContainer}>
-//               <Text>Events Created</Text>
-//             </TouchableOpacity>
-//           </View>
-//         </View>
-//       </View>
-//     );
-//   }
-// }
 
 export default ProfileScreen;
 
@@ -127,4 +99,14 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: '#00BFFF',
   },
+  eventsCreatedCount : {
+    marginTop : 20,
+    marginBottom : 50,
+  },
+  divider : {
+    width : '100%',
+    height : 1,
+    backgroundColor : 'black',
+    marginTop : 15,
+  }
 });

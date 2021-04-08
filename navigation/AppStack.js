@@ -1,5 +1,5 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import { View } from 'react-native';
 
 //screens
@@ -9,13 +9,14 @@ import BottomTabNavigator from './BottomTabNavigator';
 import NewEventScreen from '../screens/NewEventScreen';
 import EventDetailScreen from '../screens/EventDetailScreen';
 import MapScreen from '../screens/MapScreen';
+import EventsCreatedScreen from '../screens/EventsCreatedScreen';
 
 
 const Stack = createStackNavigator();
 
 const AppStack = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{...TransitionPresets.SlideFromRightIOS}}>
       <Stack.Screen
         name="BottomTabNavigator"
         component={BottomTabNavigator}
@@ -49,6 +50,17 @@ const AppStack = () => {
         component={MapScreen}
         options={{
           title : "location",
+          headerTitleAlign : 'center',
+          headerStyle : {
+            elevation : 1
+          }
+        }}
+      />
+      <Stack.Screen
+        name="EventsCreatedScreen"
+        component={EventsCreatedScreen}
+        options={{
+          title : "Events By Me",
           headerTitleAlign : 'center',
           headerStyle : {
             elevation : 1
