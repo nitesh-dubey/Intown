@@ -1,4 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react';
+import {StyleSheet} from 'react-native';
+import {ActivityIndicator} from 'react-native-paper';
 import {NavigationContainer} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -8,7 +10,7 @@ import AuthStack from './AuthStack';
 import AppStack from './AppStack';
 
 const Routes = () => {
-  const {user, setUser} = useContext(AuthContext);
+  const {user, setUser, likedEventSet, setLikedEventSet} = useContext(AuthContext);
   const [initializing, setInitializing] = useState(true);
 
   const onAuthStateChanged = (user) => {
@@ -22,6 +24,7 @@ const Routes = () => {
       .then(usr => {
         console.log(usr._data);
         setUser(usr._data);
+        setLikedEventSet(new Set(usr._data.likedEventList));
       })
     }
     else {
@@ -36,7 +39,7 @@ const Routes = () => {
     return subscriber;
   }, []);
 
-  if (initializing) return null; //or Provide a loader
+  if (initializing) return <ActivityIndicator style={StyleSheet.activityIndicatorStyles} />; //or Provide a loader
 
   return (
     <NavigationContainer>
@@ -46,3 +49,11 @@ const Routes = () => {
 };
 
 export default Routes;
+
+const styles = StyleSheet.create({
+  activityIndicatorStyles : {
+    flex : 1,
+    justifyContent : 'center',
+    alignItems : 'center'
+  }
+})

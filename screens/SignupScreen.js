@@ -64,7 +64,14 @@ const SignupScreen = ({ navigation }) => {
 
       <FormButton
         buttonTitle="Sign Up"
-        onPress={() => register(name, email, password)}
+        onPress={
+          (email === "" || password === "" || name === "" || (password !== confirmPassword))
+          ?
+            () => {alert("Enter the Details Correctly")}
+          :
+            () => register(name, email, password)
+        
+        }
       />
 
       <View style={styles.textPrivate}>
@@ -82,7 +89,7 @@ const SignupScreen = ({ navigation }) => {
         </Text>
       </View>
 
-      {Platform.OS === "android" ? (
+      {/* {Platform.OS === "android" ? (
         <View>
           <SocialButton
             buttonTitle="Sign Up with Facebook"
@@ -100,7 +107,7 @@ const SignupScreen = ({ navigation }) => {
             onPress={() => {}}
           />
         </View>
-      ) : null}
+      ) : null} */}
 
       <TouchableOpacity
         style={styles.navButton}
@@ -128,9 +135,11 @@ const styles = StyleSheet.create({
     fontSize: 28,
     marginBottom: 10,
     color: "#051d5f",
+    textAlign : 'center'
   },
   navButton: {
     marginTop: 15,
+    alignItems : 'center'
   },
   navButtonText: {
     fontSize: 18,

@@ -6,17 +6,25 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [likedEventSet, setLikedEventSet] = useState(new Set([]));
 
   return (
     <AuthContext.Provider
       value={{
         user,
         setUser,
+        likedEventSet,
+        setLikedEventSet,
         login: async (email, password) => {
+          if(email == "" || password == "") {
+            alert("Please Enter the details correctly");
+            return;
+          }
           try {
             await auth().signInWithEmailAndPassword(email, password);
           } catch (e) {
-            console.log(e);
+            alert(e);
+            // console.log(e);
           }
         },
         register: (name, email, password) => {
@@ -36,24 +44,24 @@ export const AuthProvider = ({ children }) => {
                     name : name,
                     email : currUser.email,
                     eventsCreatedCount : 0,
-                    attendingEventList : [],
                     likedEventList : []
                   }
 
                   setUser(userInfo);
+                  setLikedEventSet(new set());
                   return firestore()
                           .collection('Users')
                           .doc(userInfo.uid)
                           .set(userInfo);
 
                 })
-                .catch(e => console.log(e));
+                .catch(e => {alert(e)});
         },
         logout: async () => {
           try {
             await auth().signOut();
           } catch (e) {
-            console.log(e);
+            alert(e);
           }
         },
       }}

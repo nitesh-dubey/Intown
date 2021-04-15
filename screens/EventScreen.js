@@ -12,11 +12,13 @@ import {Icon} from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { ActivityIndicator } from 'react-native-paper';
 
+import EventCard from '../components/EventCard';
+
 // import {Button} from 'react-native-elements'
-import RNPicker from "rn-modal-picker";
+// import RNPicker from "rn-modal-picker";
 
 import firestore from '@react-native-firebase/firestore';
-import moment from 'moment';
+// import moment from 'moment';
 //import geohash from "ngeohash";
 import Geolocation from 'react-native-geolocation-service';
 import haversine from 'haversine'; //calculates distance between two geo points
@@ -42,8 +44,8 @@ const EventScreen = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([])
 
-  const [lat, setLat] = useState();
-  const [long, setLong] = useState();
+  // const [lat, setLat] = useState();
+  // const [long, setLong] = useState();
 
   const [isLocationPermissionGranted, setIsLocationPermissionGranted] = useState(false);
   const [distance, setDistance] = useState(2); //Distance from current position in miles
@@ -98,8 +100,8 @@ const EventScreen = () => {
     .then(() => {
         Geolocation.getCurrentPosition(
             pos => {
-                setLat(pos.coords.latitude);
-                setLong(pos.coords.longitude);
+                // setLat(pos.coords.latitude);
+                // setLong(pos.coords.longitude);
                 const range = getGeoHashRange(pos.coords.latitude, pos.coords.longitude, distance);
                 subscriber = firestore()
                   .collection('Events')
@@ -178,41 +180,6 @@ const EventScreen = () => {
     
   }, [distance, eventMode, eventcategory]);
 
-
-  const Item = (props) => {
-    const dateVal = moment(props.item.date.toDate()).format("DD/MM/YYYY")
-    return (
-        <TouchableNativeFeedback onPress={() => navigation.navigate('EventDetailScreen', {...props.item})} >
-            <View style={styles.itemStyle} >
-
-                <View style={{padding:15, backgroundColor:'#d1f3f5', }} >
-                    
-                    <Text style={{ fontSize:24, fontWeight:'bold', }} >{props.item.eventcategory}</Text>
-                    <Text style={{ fontSize:18, fontWeight:'900', }} > Max Attendees: {props.item.maxAttendees}</Text>
-
-                    <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:8, alignItems:'baseline'}} >
-                        <View style={{flexDirection:'row', alignItems:'baseline' }} >
-                            <Text style={{fontSize:16, fontWeight:'bold'}} >Type: </Text>
-                            <Text  >{props.item.eventcategory}</Text>
-                        </View>
-
-                        <Text style={{fontSize:16, fontWeight:'bold'}} >{dateVal} </Text>
-                    </View>
-                </View>
-
-                <View style={{ height:200, maxwidth:'100%', }} >
-                        <Image 
-                            source={{uri:props.item.thumbnailURL}} 
-                            resizeMode="cover" 
-                            style={styles.imageStyle}
-                        /> 
-                </View>
-
-            </View>
-        </TouchableNativeFeedback>
-    );
-  };
-
   if(loading) {
     return <ActivityIndicator style={styles.activityIndicatorStyle} />
   }
@@ -239,7 +206,7 @@ const EventScreen = () => {
         style={{width : '100%'}}
         data={data}
         showsVerticalScrollIndicator={false}
-        renderItem={({item}) => <Item item={item} />}
+        renderItem={({item}) => <EventCard item={item} />}
         keyExtractor={(item) => item.eventId}
       />
     </View>
@@ -323,19 +290,6 @@ const styles = StyleSheet.create({
     justifyContent : 'center',
     alignItems : 'center',
   },
-  itemStyle : {
-    marginVertical:20, 
-    marginHorizontal:15, 
-    borderRadius:15,  
-    backgroundColor:'#ced6e0', 
-    elevation:15
-  },
-  imageStyle : {
-    flex:1,
-    alignSelf:'stretch',
-    borderBottomLeftRadius:15,
-    borderBottomRightRadius:15, 
-  }
 
 });
 

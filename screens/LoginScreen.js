@@ -14,8 +14,8 @@ import SocialButton from "../components/SocialButton";
 import { AuthContext } from "../navigation/AuthProvider";
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   // const { login, googleLogin, fbLogin } = useContext(AuthContext);
   const { login } = useContext(AuthContext);
@@ -44,14 +44,20 @@ const LoginScreen = ({ navigation }) => {
 
       <FormButton
         buttonTitle="Sign In"
-        onPress={() => login(email, password)}
+        onPress={
+          (email == ""  || password == "")
+          ?
+            () => {alert("Please Enter Details Correctly")}
+          :
+            () => login(email, password)
+        }
       />
 
       {/* <TouchableOpacity style={styles.forgotButton} onPress={() => {}}>
         <Text style={styles.navButtonText}>Forgot Password?</Text>
       </TouchableOpacity> */}
 
-      {Platform.OS === "android" ? (
+      {/* {Platform.OS === "android" ? (
         <View>
           <SocialButton
             buttonTitle="Sign In with Facebook"
@@ -69,7 +75,7 @@ const LoginScreen = ({ navigation }) => {
             // onPress={() => googleLogin()}
           />
         </View>
-      ) : null}
+      ) : null} */}
 
       <TouchableOpacity
         style={styles.forgotButton}
@@ -87,7 +93,8 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
+    // justifyContent: "center",
+    flexGrow : 1,
     alignItems: "center",
     padding: 20,
     paddingTop: 50,
