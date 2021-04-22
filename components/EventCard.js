@@ -13,6 +13,7 @@ const EventCard = (props) => {
     const [likesNumber, setLikesNumber] = useState(props.item.likesCount);
     const dateVal = moment(props.item.date.toDate()).format("DD/MM/YYYY")
 
+    //Updating the database when like button is pressed.
     const likeButtonPressed = () => {
         let userRef = firestore().collection('Users').doc(user.uid);
         let eventRef = firestore().collection('Events').doc(props.item.eventId);
@@ -141,8 +142,6 @@ const styles = StyleSheet.create({
     imageStyle : {
         flex:1,
         alignSelf:'stretch',
-        // borderBottomLeftRadius:15,
-        // borderBottomRightRadius:15, 
     },
     cardFooterStyle : {
         height : 55, 

@@ -2,6 +2,7 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import RNPicker from "rn-modal-picker";
 
+//Filters which is used to fetch data from database
 const FilterButtons = (props) => {
 
     //Filter Data

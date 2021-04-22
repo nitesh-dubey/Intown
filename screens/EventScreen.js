@@ -14,38 +14,29 @@ import { ActivityIndicator } from 'react-native-paper';
 
 import EventCard from '../components/EventCard';
 
-// import {Button} from 'react-native-elements'
-// import RNPicker from "rn-modal-picker";
 
 import firestore from '@react-native-firebase/firestore';
-// import moment from 'moment';
-//import geohash from "ngeohash";
-import Geolocation from 'react-native-geolocation-service';
-import haversine from 'haversine'; //calculates distance between two geo points
 
-// import FormButton from '../components/FormButton';
-// import {AuthContext} from '../navigation/AuthProvider';
+//React native geolocation service
+import Geolocation from 'react-native-geolocation-service';
+
+//Haversine formula is used to calculate distance between 2 lat-langs on earth.
+//It takes into consideration the curvature of earth.
+import haversine from 'haversine';
+
 import FilterButtons from '../components/FilterButtons';
 
-//width, height
-// import {windowWidth, windowHeight} from '../utils/Dimensions';
 
-//dummy data
-// import eventsData from '../data/db';
-// import eventsData from '../data/eventsData.json';
-
-//Locations Functions
+//Location Related Functions
 import {requestLocationPermission, getGeoHashRange} from '../utils/LocationFunctions';
 
 
 const EventScreen = () => {
   const navigation = useNavigation();
-  //const [data, setData] = useState(eventsData);
+  
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([])
 
-  // const [lat, setLat] = useState();
-  // const [long, setLong] = useState();
 
   const [isLocationPermissionGranted, setIsLocationPermissionGranted] = useState(false);
   const [distance, setDistance] = useState(2); //Distance from current position in miles
@@ -53,46 +44,10 @@ const EventScreen = () => {
   const [eventMode, setEventMode] = useState("Offline");
 
   
-
-
+  //used to fetch events data from firestore based on filters and location
+  //and that data is displayed in EventCard
   useEffect(() => {
 
-    /*
-    let subscriber = undefined;
-    Geolocation.getCurrentPosition(
-      pos => {
-        setLat(pos.coords.latitude);
-        setLong(pos.coords.longitude);
-        const range = getGeoHashRange(pos.coords.latitude, pos.coords.longitude, distance);
-        subscriber = firestore()
-        .collection('Events')
-        .where('geohash', '>=', range.lower)
-        .where('geohash', '<=', range.upper)
-        .where('eventMode', '==', eventMode)
-        .where('eventcategory', '==', eventcategory)
-        .onSnapshot(querySnapshot => {
-          let events = [];
-          if(querySnapshot) {
-            querySnapshot.forEach(documentSnapshot => {
-              events.push({
-                ...documentSnapshot.data(),
-                eventId : documentSnapshot.id,
-              })
-            })
-          }
-
-          console.log("Events = ", events);
-          console.log("querySnapshot = ", querySnapshot)
-        })
-      },
-      error => alert(error.message)
-    );
-
-    return () => subscriber ? subscriber() : null;
-
-    */
-
-  
     
     let subscriber = undefined;
 
@@ -100,8 +55,6 @@ const EventScreen = () => {
     .then(() => {
         Geolocation.getCurrentPosition(
             pos => {
-                // setLat(pos.coords.latitude);
-                // setLong(pos.coords.longitude);
                 const range = getGeoHashRange(pos.coords.latitude, pos.coords.longitude, distance);
                 subscriber = firestore()
                   .collection('Events')
@@ -141,44 +94,9 @@ const EventScreen = () => {
     })
 
     return () => subscriber ? subscriber() : null;
-
-    
-    
-
-    /*
-    const range = getGeoHashRange(24.083132, 82.6589776, distance)
-    
-    const subscriber = firestore()
-    .collection('Events')
-    .where("geohash", '>=', range.lower)
-    .where("geohash", '<=', range.upper)
-    .where("eventMode", "==", eventMode)
-    .where("eventcategory", "==", eventcategory)
-    .onSnapshot(querySnapshot => {
-      let events = []
-      
-      if(querySnapshot) {
-        querySnapshot.forEach(documentSnapshot => {
-          events.push({
-            ...documentSnapshot.data(),
-            eventId : documentSnapshot.id,
-          })
-        })
-      }
-      // console.log("Events : ", events);
-      setData(events);
-      setLoading(false);
-      console.log("Events Size : ", events.length)
-      console.log("Events : ", events);
-      console.log('Event Category : ', eventcategory);
-      console.log('Event Mode : ', eventMode);
-    }, (error) => console.log(error))
-
-    return () => subscriber();
-
-    */
     
   }, [distance, eventMode, eventcategory]);
+
 
   if(loading) {
     return <ActivityIndicator style={styles.activityIndicatorStyle} />
@@ -228,7 +146,6 @@ const styles = StyleSheet.create({
   },
   htext:{
     fontSize:20,
-    // fontFamily: "Cochin",
     fontWeight:'bold',
     textAlign:'center',
     margin:15

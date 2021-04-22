@@ -4,6 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 
 export const AuthContext = createContext();
 
+//It is provider which is used to provide global state, functions and data to whole app.
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [likedEventSet, setLikedEventSet] = useState(new Set([]));

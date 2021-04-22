@@ -7,6 +7,7 @@ import {useNavigation} from '@react-navigation/native';
 
 import EventCard from '../components/EventCard';
 
+//Contains list of events created by me.
 const EventsCreatedScreen = () => {
     const [loading, setLoading] = useState(true);
     const [eventsList, setEventsList] = useState([]);

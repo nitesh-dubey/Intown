@@ -1,6 +1,7 @@
 import {PermissionsAndroid} from 'react-native';
 import geohash from 'ngeohash';
 
+//This function is used to request device location permission from the user.
 export function requestLocationPermission(isLocationPermissionGranted, setIsLocationPermissionGranted) {
     return new Promise((resolve, reject) => {
 
@@ -34,7 +35,7 @@ export function requestLocationPermission(isLocationPermissionGranted, setIsLoca
     })
 }
 
-
+//It is used to find the upper and lower ranges of lat-langs given the current position and distance.
 export function getGeoHashRange(latitude, longitude, distance) {
     
     const lat = 0.0144927536231884; // degrees latitude per mile

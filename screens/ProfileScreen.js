@@ -23,10 +23,6 @@ const ProfileScreen = () => {
 
           <Divider style={styles.divider} />
 
-          {/* <TouchableOpacity style={styles.buttonContainer}>
-            <Text>Events Registered</Text>
-          </TouchableOpacity> */}
-
           <View style = {styles.eventsCreatedCount}>
             <Text style={{fontSize : 20}}>Events Created : {user.eventsCreatedCount}</Text>
           </View>

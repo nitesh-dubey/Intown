@@ -70,15 +70,6 @@ class EventDetailScreen extends Component {
                                   </TouchableOpacity> 
                            }
                          </View>
-                         {/* <View>
-                           {  
-                                   params.form == null &&                  
-                                   <TouchableOpacity style={{elevation:9, flexDirection:'row', padding:12,borderRadius:6, backgroundColor:"#97d381"}}  onPress={() => alert("Registration Yet to open")} >
-                                    {register_icon}
-                                    <Text style={{color:'black',fontSize:15 }} >Register</Text>
-                                  </TouchableOpacity> 
-                           }
-                         </View> */}
                          <View>
                            {  
                                   // params.form == null &&                  

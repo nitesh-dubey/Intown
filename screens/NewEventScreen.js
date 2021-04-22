@@ -3,23 +3,26 @@ import {Text, View, StyleSheet, ScrollView, PermissionsAndroid} from 'react-nati
 import { useNavigation } from '@react-navigation/native';
 import RNPicker from "rn-modal-picker";
 import DatePicker from 'react-native-date-picker';
-//import DateTimePickerModal from "react-native-modal-datetime-picker";
+
 import { Input, Icon, Button, Overlay } from 'react-native-elements';
 import {AuthContext} from '../navigation/AuthProvider';
 
-// import Geolocation from "@react-native-community/geolocation";
+//Geolocation service, which helps in getting the location of device.
 import Geolocation from 'react-native-geolocation-service';
+
+//Geohash is used to encode latitude and longitude into one string. 
 import geohash from 'ngeohash';
 
 import firestore from '@react-native-firebase/firestore';
 
+//Helps in requesting location Permission from phone if location is turned off.
 import {requestLocationPermission} from '../utils/LocationFunctions';
 
 //Importing thumbnail data
 import ThumbnailURL from '../data/thumbnailUrl.json';
 
 
-
+//Component used to create new event.
 const NewEventScreen = () => {
     const [eventCategory, setEventCategory] = useState('');
     const [categoryData, setCategoryData] = useState([
@@ -60,8 +63,8 @@ const NewEventScreen = () => {
     const [isLocationPermissionGranted, setIsLocationPermissionGranted] = useState(false);
     
     
-    //under construction
 
+    //Used to find current location of device using geolocation service
     const getCurrentPosition = () => {
         requestLocationPermission(isLocationPermissionGranted, setIsLocationPermissionGranted)
         .then(() => {
@@ -75,37 +78,7 @@ const NewEventScreen = () => {
         })
     }
 
-    /*
-    const getCurrentPosition = () => {
-        if(isLocationPermissionGranted) {
-            Geolocation.getCurrentPosition(
-                pos => {
-                    setLat(pos.coords.latitude);
-                    setLong(pos.coords.longitude);
-
-                },
-                error => alert(error.message),
-                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-            );
-        }
-        else {
-            requestLocationPermission(isLocationPermissionGranted, setIsLocationPermissionGranted)
-            .then(() => {
-                Geolocation.getCurrentPosition(
-                    pos => {
-                        setLat(pos.coords.latitude);
-                        setLong(pos.coords.longitude);               
-                    },
-                    error => alert(error.message)
-                );
-            })
-        }
-    };
-
-    */
-
-
-
+    //Adding new event created, to firestore database.
     const addToDatabase = () => {
 
         let db = firestore();
@@ -428,7 +401,6 @@ export default NewEventScreen;
 const styles = StyleSheet.create({
     container : {
         flexGrow : 1,
-        // justifyContent : 'space-between',
         alignItems : 'center',
         padding : 30,
         backgroundColor : '#fff'

@@ -7,6 +7,7 @@ import LoginScreen from "../screens/LoginScreen";
 
 const Stack = createStackNavigator();
 
+//It is AuthStack which wraps login and signup screens.
 const AuthStack = () => {
   return (
     <Stack.Navigator initialRouteName={"Login"}>

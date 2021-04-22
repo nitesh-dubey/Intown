@@ -14,6 +14,7 @@ import EventsCreatedScreen from '../screens/EventsCreatedScreen';
 
 const Stack = createStackNavigator();
 
+//It's App stack navigator which wraps BottomTabNavigator and all the screens of the app. 
 const AppStack = () => {
   return (
     <Stack.Navigator screenOptions={{...TransitionPresets.SlideFromRightIOS}}>

@@ -13,11 +13,12 @@ import FormButton from "../components/FormButton";
 import SocialButton from "../components/SocialButton";
 import { AuthContext } from "../navigation/AuthProvider";
 
+//Login Screen Component
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // const { login, googleLogin, fbLogin } = useContext(AuthContext);
+  //The login function fetched from Provider using Context API
   const { login } = useContext(AuthContext);
 
   return (
@@ -53,30 +54,6 @@ const LoginScreen = ({ navigation }) => {
         }
       />
 
-      {/* <TouchableOpacity style={styles.forgotButton} onPress={() => {}}>
-        <Text style={styles.navButtonText}>Forgot Password?</Text>
-      </TouchableOpacity> */}
-
-      {/* {Platform.OS === "android" ? (
-        <View>
-          <SocialButton
-            buttonTitle="Sign In with Facebook"
-            btnType="facebook"
-            color="#4867aa"
-            backgroundColor="#e6eaf4"
-            // onPress={() => fbLogin()}
-          />
-
-          <SocialButton
-            buttonTitle="Sign In with Google"
-            btnType="google"
-            color="#de4d41"
-            backgroundColor="#f5e7ea"
-            // onPress={() => googleLogin()}
-          />
-        </View>
-      ) : null} */}
-
       <TouchableOpacity
         style={styles.forgotButton}
         onPress={() => navigation.navigate("Signup")}
@@ -93,7 +70,6 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {
-    // justifyContent: "center",
     flexGrow : 1,
     alignItems: "center",
     padding: 20,
@@ -106,7 +82,6 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   text: {
-    // fontFamily: "Kufam-SemiBoldItalic",
     fontSize: 28,
     marginBottom: 10,
     color: "#051d5f",
@@ -121,6 +96,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "500",
     color: "#2e64e5",
-    // fontFamily: "Lato-Regular",
   },
 });
