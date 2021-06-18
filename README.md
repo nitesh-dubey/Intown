@@ -17,7 +17,7 @@ This is an App similar to Eventbrite or Facebook Events, built using React Nativ
 
 
 
-### Tech Stack Used
+## Tech Stack Used
 
 - React Native
 - React Native Elements
@@ -28,7 +28,7 @@ This is an App similar to Eventbrite or Facebook Events, built using React Nativ
 
 
 
-###Steps to build and run the Project
+## Steps to build and run the Project
 
 
 
@@ -45,11 +45,11 @@ You can Find more about the App from the Final Submission Folder above.
 
 
 
-### Demo of the App
+## Demo of the App
 
 
 
-<img src="./Final Submission/Presentation.gif" height="900" width="405"/>
+<img src="./Final Submission/Presentation.gif" height="750" width="420"/>
 
 
 
