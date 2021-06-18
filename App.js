@@ -9,7 +9,7 @@ const App = () => {
       <Providers />
     </SafeAreaProvider>
   )
-  // return <Providers />;
+  
 };
 
 export default App;
