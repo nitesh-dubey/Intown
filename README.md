@@ -21,6 +21,7 @@ This is an App similar to Eventbrite or Facebook Events, built using React Nativ
 
 - React Native
 - React Native Elements
+- React Navigation V5
 - Geolocation Service
 - Firebase Auth
 - Firestore Database
